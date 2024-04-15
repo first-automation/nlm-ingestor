@@ -14,7 +14,7 @@ app = Flask(__name__)
 logger = logging.getLogger(__name__)
 logger.setLevel(cfg.log_level())
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def health_check():
     return 'Service is running', 200
 
@@ -25,7 +25,7 @@ def parse_document(
 ):
     render_format = request.args.get('renderFormat', 'all')
     use_new_indent_parser = request.args.get('useNewIndentParser', 'no')
-    apply_ocr = request.args.get('applyOcr', 'no')
+    apply_ocr = 'no'
     file = request.files['file']
     tmp_file = None
     try:
