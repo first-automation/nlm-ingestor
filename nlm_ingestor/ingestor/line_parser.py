@@ -4,6 +4,7 @@ import math
 import re
 import string
 
+import requests
 from nltk.corpus import stopwords
 
 from .patterns import abbreviations
@@ -20,6 +21,20 @@ except Exception as e:
     stopwords = nltk.download("stopwords")
     stop_words = set(stopwords.words("english"))
 
+
+def get_japanese_stopwords():
+    url = "http://svn.sourceforge.jp/svnroot/slothlib/CSharp/Version1/SlothLib/NLP/Filter/StopWord/word/Japanese.txt"
+    r = requests.get(url)
+    tmp = r.text.split('\r\n')
+    stopwords = []
+    for i in range(len(tmp)):
+        if len(tmp[i]) < 1:
+            continue
+        stopwords.append(tmp[i])
+    return stop_words
+
+
+stop_words.update(get_japanese_stopwords())
 stop_words.add("per")
 continuing_chars = "!\"&'+,./:;<=?@\\]^_`|}~"
 list_chars = [
