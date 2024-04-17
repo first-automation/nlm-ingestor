@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 FROM python:3.11-bookworm
-RUN apt-get update && apt-get -y --no-install-recommends install libgomp1
+RUN apt-get update && apt-get -y --no-install-recommends install libgomp1 wget
 ENV APP_HOME /app
 # install Java
 RUN mkdir -p /usr/share/man/man1 && \
@@ -30,7 +30,9 @@ RUN pip install --upgrade pip setuptools
 RUN apt-get install -y libmagic1 && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 RUN pip install --no-cache-dir -r requirements.txt
-RUN python -m nltk.downloader stopwords
-RUN python -m nltk.downloader punkt
+RUN mkdir -p /usr/local/nltk_data/corpora && wget "https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/corpora/stopwords.zip" -O /usr/local/nltk_data/corpora/stopwords.zip
+RUN cd /usr/local/nltk_data/corpora && unzip stopwords.zip
+RUN mkdir -p /usr/local/nltk_data/tokenizers && wget "https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/tokenizers/punkt.zip" -O /usr/local/nltk_data/tokenizers/punkt.zip
+RUN cd /usr/local/nltk_data/tokenizers && unzip punkt.zip
 RUN chmod +x run.sh
 CMD ./run.sh
