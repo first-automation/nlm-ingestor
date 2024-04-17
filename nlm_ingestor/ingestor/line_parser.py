@@ -355,8 +355,8 @@ class Line:
     # matches 1.1 1.2.1 1 etc.
     def check_numbered_line(self, word):
         trunc_word = word
-        ends_with_parens = word.endswith(")")
-        number_end_char = word.endswith(".") or ends_with_parens
+        ends_with_parens = word.endswith((")", "）"))
+        number_end_char = word.endswith((".", "．")) or ends_with_parens
         number_start_char = word.startswith("(")
         if number_start_char and not ends_with_parens:
             return False
@@ -384,11 +384,11 @@ class Line:
             if len(part) <= max_digits:
                 # (1), (2), (3)
                 self.integer_numbered_line = part.isdigit() and (
-                    len(parts) > 1 or word.endswith(")")
+                    len(parts) > 1 or word.endswith((")", "）"))
                 )
                 # 1. 2. 3.
                 self.dot_numbered_line = part.isdigit() and (
-                    len(parts) > 1 or word.endswith(".")
+                    len(parts) > 1 or word.endswith((".", "．"))
                 )
                 # a. b. c. or a) b) c)
                 # idx > 0 for patterns like 10.a
@@ -611,9 +611,9 @@ class Line:
         self.first_word = tokens[0]
         self.last_word = tokens[-1]
         self.last_char = self.text[-1]
-        self.ends_with_period = self.last_char == "."
-        self.ends_with_comma = self.last_char == ","
-        self.end_with_period_single_char = len(self.text) > 2 and self.text[-2] == "."
+        self.ends_with_period = self.last_char in [".", "．", "。"]
+        self.ends_with_comma = self.last_char in [",", "、"]
+        self.end_with_period_single_char = len(self.text) > 2 and self.text[-2] in [".", "．", "。"]
 
         self.eff_word_count = self.alpha_count - self.stop_word_count
         self.check_ends_with_period()
