@@ -357,10 +357,10 @@ class Line:
         trunc_word = word
         ends_with_parens = word.endswith((")", "）"))
         number_end_char = word.endswith((".", "．")) or ends_with_parens
-        number_start_char = word.startswith("(")
+        number_start_char = word.startswith(("(", "（"))
         if number_start_char and not ends_with_parens:
             return False
-        if word[-1] in ["%", "$", ","]:
+        if word[-1] in ["%", "$", ",", "、", "％", "＄", "円"]:
             return False
         if number_end_char:
             trunc_word = word[:-1]
@@ -369,8 +369,10 @@ class Line:
         # To handle scenarios like (ii)(A)
         if ")(" in trunc_word:
             trunc_word = trunc_word.split(")(")[0]
+        if "）（" in trunc_word:
+            trunc_word = trunc_word.split("）（")[0]
 
-        parts = trunc_word.split(".")
+        parts = re.split("\.|．", trunc_word)
         self.integer_numbered_line = False
         self.roman_numbered_line = False
         self.letter_numbered_line = False
@@ -408,7 +410,7 @@ class Line:
                 self.roman_numbered_line = (
                     True if roman_number_pattern.match(part) and idx == 0 else False
                 )
-            if part.endswith(")") and part[0].isalnum() and "(" in part:
+            if part.endswith((")", "）")) and part[0].isalnum() and ("(" in part or "（" in part):
                 mixed_list_items = True
             # else:
             #     self.integer_numbered_line = False

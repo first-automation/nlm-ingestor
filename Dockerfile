@@ -25,14 +25,15 @@ RUN apt-get install unzip -y && \
     apt-get install git -y && \
     apt-get autoremove -y
 WORKDIR ${APP_HOME}
-COPY . ./
 RUN pip install --upgrade pip setuptools
 RUN apt-get install -y libmagic1 && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 RUN mkdir -p /usr/local/nltk_data/corpora && wget "https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/corpora/stopwords.zip" -O /usr/local/nltk_data/corpora/stopwords.zip
 RUN cd /usr/local/nltk_data/corpora && unzip stopwords.zip
 RUN mkdir -p /usr/local/nltk_data/tokenizers && wget "https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/tokenizers/punkt.zip" -O /usr/local/nltk_data/tokenizers/punkt.zip
 RUN cd /usr/local/nltk_data/tokenizers && unzip punkt.zip
+COPY . ./
 RUN chmod +x run.sh
 CMD ./run.sh

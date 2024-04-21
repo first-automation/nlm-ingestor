@@ -3,6 +3,7 @@ from nlm_ingestor.ingestor_utils.utils import detect_block_center_aligned
 from nlm_ingestor.ingestor import line_parser
 import copy
 import operator
+import re
 
 LEVEL_DEBUG = False
 NO_INDENT = False
@@ -39,7 +40,7 @@ def get_list_item_sum(number, list_type):
         return roman_numeral_to_decimal(number.upper())
     elif list_type == "integer" or list_type == "integer-dot":
         new_number = ""
-        for c in number.split("."):
+        for c in re.split(r"\.|．", number):
             if len(c) == 1:
                 new_number += "0"
             if c.isdigit():
