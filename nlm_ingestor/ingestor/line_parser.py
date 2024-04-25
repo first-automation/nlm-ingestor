@@ -315,7 +315,7 @@ class Line:
     def check_ends_with_period(self):
         # punct_rule = self.last_char in string.punctuation and self.last_char not in [':', '.']
         last_word_is_title = self.last_word in ["Mr.", "Dr.", "Mrs."]
-        self.ends_with_period = self.last_char in ["."] and not last_word_is_title
+        self.ends_with_period = self.last_char in [".", "．", "。"] and not last_word_is_title
 
     def check_table_row(self):
         if not self.is_header:
@@ -361,7 +361,7 @@ class Line:
         number_start_char = word.startswith(("(", "（"))
         if number_start_char and not ends_with_parens:
             return False
-        if word[-1] in ["%", "$", ",", "、", "％", "＄", "円"]:
+        if word[-1] in ["%", "$", ",", "，", "、", "％", "＄", "円"]:
             return False
         if number_end_char:
             trunc_word = word[:-1]

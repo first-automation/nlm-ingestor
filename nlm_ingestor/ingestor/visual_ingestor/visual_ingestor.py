@@ -57,13 +57,13 @@ roman_only_pattern = re.compile(r"^[ixvIXV]+$")
 not_a_number_pattern = re.compile(r"[^0-9]+")
 single_char_pattern = re.compile(r"^[a-zA-Z]$")
 non_alphanumeric_pattern = re.compile(r"[^A-Za-z0-9]+")
-year_pattern = re.compile(r"^(1|2)\d{3}$")
+year_pattern = re.compile(r"^(1|2|１|２)[\d１-９]{3}$")
 number_in_braces_pattern = re.compile(r"(\(\d+\))")
 page_num_pattern = re.compile(PAGE_NUM_HEADER, re.IGNORECASE)
 parenthesized_hdr_pattern = re.compile(PARENTHESIZED_HDR)
 ends_with_sentence_delimiter_pattern = re.compile(r"(?<![.;:][a-zA-Z0-9])(?<!INC|inc|Inc)[.;:]+(?![\w])[\"“‘’”\'\s]*$")
-section_num_pattern = re.compile(r"^\d+([.]?\d+[.]?)*$")
-floating_number_pattern = re.compile(r"\d+([.]?\d+[.]?)*")
+section_num_pattern = re.compile(r"^[\d１-９]+([.．]?\d+[.．]?)*$")
+floating_number_pattern = re.compile(r"[\d１-９]+([.．]?\d+[.．]?)*")
 section_generic_pattern = re.compile(r"section(?!\s+\d+\.*\d*\.*[(])(\s+\d+\.*\d*\.*[,\-;\w\s]+\.\s*)", re.MULTILINE)
 integer_pattern = re.compile(r"(?<![\d.])[0-9]+(?![\d.])")
 start_punct_pattern = re.compile(r"^[.,;:\"“‘’”\']")
@@ -139,7 +139,7 @@ class Doc:
         if self.audited_bbox:
             # Group by page_idx for later usage.
             table_query = {'block_type': 'table'}
-            for page_id, bboxes in groupby(audited_bbox, key=lambda bbox: bbox.page_idx):
+            for page_id, bboxes in groupby(self.audited_bbox, key=lambda bbox: bbox.page_idx):
                 list_of_bbox = list(bboxes)
                 self.audited_bbox[page_id] = list_of_bbox
                 self.audited_table_bbox[page_id] = list(self.filter_list_of_bbox(list_of_bbox, **table_query))

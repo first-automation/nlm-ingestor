@@ -343,12 +343,13 @@ class BlockRenderer:
                 is_rendering_table = False
                 table_block = render_dict["blocks"][-1] 
                 table_block["table_rows"] = table_rows
-                table_block["bbox"] = [
-                        table_block["left"],
-                        table_block["top"],
-                        table_block["left"] + block["box_style"][3],
-                        table_block["top"] + block["box_style"][4],
-                    ]  if "box_style" in block else []                 
+                if table_block["tag"] == "table":
+                    table_block["bbox"] = [
+                            table_block["left"],
+                            table_block["top"],
+                            table_block["left"] + block["box_style"][3],
+                            table_block["top"] + block["box_style"][4],
+                        ]  if "box_style" in block else []
                 table_rows = []
 
         return render_dict
