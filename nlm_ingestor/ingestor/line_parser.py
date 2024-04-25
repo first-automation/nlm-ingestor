@@ -1,3 +1,4 @@
+import os
 import datetime
 import logging
 import math
@@ -23,9 +24,9 @@ except Exception as e:
 
 
 def get_japanese_stopwords():
-    url = "http://svn.sourceforge.jp/svnroot/slothlib/CSharp/Version1/SlothLib/NLP/Filter/StopWord/word/Japanese.txt"
-    r = requests.get(url)
-    tmp = r.text.split('\r\n')
+    with open(os.path.join(os.path.dirname(__file__), "Japanese.txt"), "r") as f:
+        text = f.read()
+    tmp = text.split('\r\n')
     stopwords = []
     for i in range(len(tmp)):
         if len(tmp[i]) < 1:
