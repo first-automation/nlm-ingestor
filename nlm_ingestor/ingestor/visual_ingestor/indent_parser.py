@@ -1,6 +1,7 @@
 from nlm_ingestor.ingestor.visual_ingestor import table_parser
 from nlm_ingestor.ingestor_utils.utils import detect_block_center_aligned
 from nlm_ingestor.ingestor import line_parser
+from nlm_ingestor.ingestor_utils.utils import special_number_characters
 import copy
 import operator
 import re
@@ -44,7 +45,10 @@ def get_list_item_sum(number, list_type):
             if len(c) == 1:
                 new_number += "0"
             if c.isdigit():
-                new_number += c
+                if c in special_number_characters:
+                    new_number += str(special_number_characters[c])
+                else:
+                    new_number += c
         return int(new_number)
     elif list_type == "letter":
         return sum(ord(c) for c in number)

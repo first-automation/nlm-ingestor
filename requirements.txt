@@ -7,10 +7,10 @@ tika
 bs4
 nltk
 python-magic
-numpy
+numpy==1.24.4
 tqdm
 symspellpy==6.7.0
-pandas==1.2.4
+pandas==2.2.1
 mistune==2.0.3
 lxml==4.9.1
 unidecode

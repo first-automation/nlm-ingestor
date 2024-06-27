@@ -12,6 +12,7 @@ from .patterns import abbreviations
 from .patterns import states
 from .patterns import states_abbreviations
 from .styling_utils import mode_of_list
+from ..ingestor_utils.utils import jfloat
 
 try:
     stop_words = set(stopwords.words("english"))
@@ -148,7 +149,7 @@ class Word:
         self.check_date()
         try:
             if n:
-                n = round(float(n))
+                n = round(jfloat(n))
                 if n > 0:
                     digits = int(math.log10(n)) + 1
                 elif n == 0:

@@ -307,3 +307,35 @@ def get_block_texts(blocks):
             block_texts.append(block["block_text"])
             block_info.append(block)
     return block_texts, block_info
+
+
+special_number_characters = {
+    "①": 1,
+    "②": 2,
+    "③": 3,
+    "④": 4,
+    "⑤": 5,
+    "⑥": 6,
+    "⑦": 7,
+    "⑧": 8,
+    "⑨": 9,
+    "⑩": 10,
+    "⑪": 11,
+    "⑫": 12,
+    "⑬": 13,
+    "⑭": 14,
+    "⑮": 15,
+    "⑯": 16,
+    "⑰": 17,
+    "⑱": 18,
+    "⑲": 19,
+    "⑳": 20,
+}
+
+def jfloat(s: str) -> float:
+    try:
+        if s in special_number_characters:
+            return float(special_number_characters[s])
+        return float(s.replace(",", ""))
+    except ValueError:
+        raise ValueError(f"Cannot convert {s} to float")
